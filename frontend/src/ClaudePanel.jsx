@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
+import { getBaseUrl } from './api'
 import './claude.css'
-const api = (path, options) => fetch(`/api${path}`, options)
+const base = () => getBaseUrl()
+const api = (path, options) => fetch(`${base()}/api${path}`, options)
 const text = event => event?.type === 'result' ? event.result : event?.type === 'assistant' ? (event.message?.content || []).map(x=>x.text || `[${x.type}]`).join('') : event?.type ? `[${event.type}] ${event.subtype || ''}` : ''
 export default function ClaudePanel() {
   const [workspaces,setWorkspaces]=useState([]),[workspaceId,setWorkspaceId]=useState(''),[task,setTask]=useState(''),[mode,setMode]=useState('plan'),[running,setRunning]=useState(false),[logs,setLogs]=useState([])

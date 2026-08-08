@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { api } from '../api'
+import { api, getBaseUrl } from '../api'
 
 export default function ProfileEditor({ profile, onClose, onSaved }) {
   const [name, setName] = useState(profile?.name || '')
@@ -25,7 +25,7 @@ export default function ProfileEditor({ profile, onClose, onSaved }) {
     if (!file) return
     setBusy(true); setError('')
     try {
-      const response = await fetch('/api/profile/avatar', {
+      const response = await fetch(`${getBaseUrl()}/api/profile/avatar`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/octet-stream' },
         body: file,

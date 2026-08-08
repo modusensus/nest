@@ -1,0 +1,9 @@
+{
+  "appId": "com.modusensus.aiworkbench",
+  "appName": "个人 AI 工作台",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "http",
+    "cleartext": true
+  }
+}

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { api, post } from './api'
+import { api, post, getBaseUrl, setBaseUrl } from './api'
 import HomeView from './views/HomeView'
 import ChatView from './views/ChatView'
 import ProjectsView from './views/ProjectsView'
@@ -41,6 +41,8 @@ export default function App() {
   )
   const [profile, setProfile] = useState(null)
   const [editingProfile, setEditingProfile] = useState(false)
+  const [serverUrl, setServerUrl] = useState(() => getBaseUrl() || '')
+  const [showServerInput, setShowServerInput] = useState(false)
 
   const loadProfile = useCallback(() => api('/profile').then(setProfile).catch(() => {}), [])
   useEffect(() => { loadProfile() }, [loadProfile])
@@ -135,6 +137,30 @@ export default function App() {
           </span>
           {!collapsed && <span className="wb-theme-label">{theme === 'dark' ? '夜刊' : '日刊'}</span>}
         </button>
+        {!collapsed && (
+          <div className="wb-server-cfg">
+            {showServerInput ? (
+              <form className="wb-server-form" onSubmit={e => {
+                e.preventDefault()
+                setBaseUrl(serverUrl)
+                setShowServerInput(false)
+              }}>
+                <input
+                  value={serverUrl}
+                  onChange={e => setServerUrl(e.target.value)}
+                  placeholder="服务器地址，如 http://192.168.1.100:8000"
+                  style={{ font: 'inherit', fontSize: 11, padding: '5px 8px', width: '100%' }}
+                />
+                <button type="submit" className="wb-link" style={{ fontSize: 10 }}>保存</button>
+              </form>
+            ) : (
+              <button className="wb-server-btn" onClick={() => setShowServerInput(true)} title="服务器地址">
+                <Icon name="settings" />
+                <span className="wb-server-label">{serverUrl || '默认'}</span>
+              </button>
+            )}
+          </div>
+        )}
         <button className="wb-collapse" onClick={() => setCollapsed(v => !v)} title={collapsed ? '展开导航' : '收起导航'}>
           {collapsed ? '»' : '«'}
         </button>

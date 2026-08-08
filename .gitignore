@@ -21,4 +21,9 @@ electron/backend-dist/
 electron/build-temp/
 electron/ai-workbench.spec
 electron/cache/
+electron/electron/
 electron/.npmrc
+
+# Capacitor Android 构建产物
+frontend/android/
+frontend/node_modules/@capacitor/

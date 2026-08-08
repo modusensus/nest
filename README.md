@@ -51,6 +51,25 @@ cd electron
 
 产物为 `个人AI工作台-便携版.zip`，解压后双击 `个人 AI 工作台.exe` 即可启动，无需安装。
 
+### 打包为手机 APK
+
+项目已配置 Capacitor，可将前端打包为 Android APK：
+
+```powershell
+cd frontend
+npm install
+npm run build
+npx cap add android
+npx cap sync android
+cd android && ./gradlew assembleDebug
+```
+
+APK 路径：`frontend/android/app/build/outputs/apk/debug/app-debug.apk`
+
+如果本机没有 Android SDK，推送代码到 GitHub 后，GitHub Actions 会自动构建 APK（`.github/workflows/build-android.yml`），可在 Actions 页面的 Artifacts 中下载。
+
+> **注意：** APK 启动后需要输入服务器的地址（如 `http://192.168.1.100:8000`）和访问密码才能连接。手机和电脑需在同一局域网，或使用公网服务器部署。
+
 ### 手动 Docker 启动
 
 ```powershell

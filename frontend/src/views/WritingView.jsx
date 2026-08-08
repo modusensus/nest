@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { api, post } from '../api'
+import { api, post, getBaseUrl } from '../api'
 import { renderMarkdown } from '../lib/markdown'
 
 const PLATFORMS = [
@@ -60,7 +60,7 @@ export default function WritingView({ focusArticleId, onDataChanged }) {
 
   async function uploadImage(file, textarea) {
     if (!file) return
-    const response = await fetch('/api/articles/images', {
+    const response = await fetch(`${getBaseUrl()}/api/articles/images`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/octet-stream' },
       body: file,

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { api } from '../api'
+import { api, getBaseUrl } from '../api'
 
 export default function ChatView({ conversationId, onDataChanged, onConversationsChanged }) {
   const [conversation, setConversation] = useState(null)
@@ -48,7 +48,7 @@ export default function ChatView({ conversationId, onDataChanged, onConversation
     }))
     let mutated = false
     try {
-      const response = await fetch(`/api/conversations/${conversationId}/chat`, {
+      const response = await fetch(`${getBaseUrl()}/api/conversations/${conversationId}/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content }),
