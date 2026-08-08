@@ -1,0 +1,92 @@
+/* ============================================================
+   个人 AI 工作台 · 编辑档案视觉系统
+   方向：墨纸报刊 / 低饱和度 / 发丝线网格 / 红色仅作手术式点缀
+   ============================================================ */
+:root{
+  /* —— 纸与墨 —— */
+  --bg:#f1eee5;            /* 冷纸底 */
+  --surface:#fbf9f3;       /* 卡片纸 */
+  --surface-2:#f6f3ea;     /* 次级纸面 */
+  --text:#1a1a1a;          /* 墨 */
+  --muted:#6b665c;
+  --faint:#a8a193;
+  --border:#d8d1c1;        /* 发丝线 */
+  --rule:#1a1a1a;          /* 重磅分隔线 */
+  --accent:#9e2b25;        /* 编辑红（克制使用） */
+  --accent-soft:color-mix(in srgb,var(--accent) 12%,transparent);
+  --ok:#3f6b4e;
+
+  /* —— 字族 —— */
+  --serif:Georgia,"Noto Serif SC","Songti SC","STZhongsong","华文中宋","SimSun",serif;
+  --sans:ui-sans-serif,system-ui,"PingFang SC","Microsoft YaHei",sans-serif;
+  --mono:ui-monospace,"SF Mono",Consolas,monospace;
+
+  /* —— 排版尺度 —— */
+  --fs-display:clamp(30px,4.4vw,46px);
+  --fs-h1:25px;
+  --fs-h2:20px;
+  --fs-h3:15px;
+  --fs-lead:14px;
+  --fs-body:13.5px;
+  --fs-small:12px;
+  --fs-eyebrow:10.5px;
+
+  /* —— 热力图色阶 —— */
+  --heat0:#e7e2d4;--heat1:#cfe3d4;--heat2:#90c79c;--heat3:#4ea56c;--heat4:#2e7a49;
+  color-scheme:light;
+}
+[data-theme="dark"]{
+  --bg:#131416;
+  --surface:#1c1e22;
+  --surface-2:#222429;
+  --text:#e9e6dd;
+  --muted:#948e82;
+  --faint:#5e5950;
+  --border:#30333a;
+  --rule:#e9e6dd;
+  --accent:#d0715e;
+  --accent-soft:color-mix(in srgb,var(--accent) 16%,transparent);
+  --ok:#63bd85;
+  --heat0:#26282e;--heat1:#234434;--heat2:#2f6a49;--heat3:#419a63;--heat4:#63bd85;
+  color-scheme:dark;
+}
+
+:root{font-family:var(--sans);color:var(--text);background:var(--bg);font-size:var(--fs-body);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+*{box-sizing:border-box}
+body{margin:0}
+::selection{background:var(--accent);color:#fff}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--text) 18%,transparent)}
+::-webkit-scrollbar-track{background:transparent}
+
+/* —— 品牌字 —— */
+.brand{font-family:var(--serif);font-weight:600;font-size:17px;letter-spacing:.04em}
+
+/* —— 主按钮：墨块 —— */
+.primary{border:0;border-radius:0;background:var(--text);color:var(--bg);padding:9px 18px;font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;transition:background .2s}
+.primary:hover:not(:disabled){background:var(--accent)}
+.primary:disabled{opacity:.4;cursor:not-allowed}
+
+/* —— 表单控件：底线式 —— */
+input,textarea,select{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:0;font:inherit}
+input:focus,textarea:focus,select:focus{outline:0;border-color:var(--text);box-shadow:0 1px 0 0 var(--text)}
+.search{font:inherit;padding:9px 11px;width:100%;border-radius:0;letter-spacing:.02em}
+.search::placeholder{color:var(--faint);font-style:italic}
+
+/* —— 会话列表 —— */
+.conversation-list{overflow:auto;flex:1;display:grid;gap:0;align-content:start;border-top:1px solid var(--border)}
+.conversation{padding:9px 4px;cursor:pointer;display:flex;justify-content:space-between;gap:6px;color:var(--muted);font-size:var(--fs-small);border-bottom:1px dotted var(--border);transition:color .15s}
+.conversation:hover{color:var(--text)}
+.conversation.selected{color:var(--text)}
+.conversation.selected::before{content:'';width:3px;background:var(--accent);margin:-9px 4px -9px -4px}
+.conversation span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.conversation button{border:0;background:transparent;cursor:pointer;color:var(--faint);font-size:13px;padding:0 2px}
+.conversation button:hover{color:var(--accent)}
+
+/* —— 编辑工具类 —— */
+.eyebrow{font-size:var(--fs-eyebrow);letter-spacing:.24em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.eyebrow.red{color:var(--accent)}
+.dropcap::first-letter{font-family:var(--serif);font-weight:500;font-size:3.1em;float:left;line-height:.82;padding:4px 8px 0 0;color:var(--accent)}
+.tabular{font-variant-numeric:tabular-nums}
+.serif{font-family:var(--serif)}
+.italic{font-style:italic}

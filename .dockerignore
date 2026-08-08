@@ -1,0 +1,17 @@
+# Git / 内部记录
+.git
+.gitignore
+.workbuddy/
+
+# 本地环境与敏感数据（禁止进入镜像）
+backend/.env
+backend/.venv/
+backend/data/
+backend/**/__pycache__/
+**/*.pyc
+err.txt
+work/ck.txt
+
+# 前端构建产物与依赖（镜像内重新构建/安装）
+frontend/node_modules/
+frontend/dist/

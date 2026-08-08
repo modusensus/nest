@@ -1,0 +1,15 @@
+[Unit]
+Description=Personal AI Workbench
+After=network.target
+
+[Service]
+Type=simple
+User=YOUR_LINUX_USER
+WorkingDirectory=/opt/personal-ai-workbench/backend
+EnvironmentFile=/opt/personal-ai-workbench/backend/.env
+ExecStart=/opt/personal-ai-workbench/backend/.venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

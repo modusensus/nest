@@ -1,0 +1,4 @@
+# 将 ai.example.com 改成你的域名。Caddy 会自动申请和续期 HTTPS 证书。
+ai.example.com {
+    reverse_proxy 127.0.0.1:8000
+}

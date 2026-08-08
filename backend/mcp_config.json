@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "workbench": {
+      "command": "python",
+      "args": ["-m", "app.mcp_server"],
+      "cwd": "c:\\Users\\石晴\\Desktop\\ai-web-ai-bot-ai-claude-2\\backend"
+    }
+  }
+}
