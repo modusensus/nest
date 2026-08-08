@@ -1,5 +1,7 @@
 # 个人 AI 工作台
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-9e2b25.svg)](https://opensource.org/licenses/MIT)
+
 一个本地优先的中文 Agent 工作台：以对话驱动 AI 助手管理你的项目、任务、打卡与写作，杂志编辑风界面，支持明暗双模式，可部署到云服务器用手机访问。
 
 ## 功能总览
@@ -146,3 +148,7 @@ CLAUDE_WORKSPACES=学习项目=C:\\Users\\你的名字\\Projects\\ai-learning;�
 ## 安全提醒
 
 `.env` 包含 API Key，已被 Git 忽略，请不要提交它。`backend/data/`（数据库、头像、配图）同样被忽略。聊天记录及所有数据始终保留在本机/你的服务器；仅在你点击发送后，消息会直接发往你配置的模型供应商。
+
+## 许可证
+
+MIT © 2026 Modusensus
