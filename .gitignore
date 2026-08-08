@@ -13,3 +13,10 @@ err.txt
 outputs/
 work/ck.txt
 work/logs.json
+
+# Electron 构建产物
+electron/node_modules/
+electron/dist/
+electron/backend-dist/
+electron/build-temp/
+electron/ai-workbench.spec

@@ -1,0 +1,53 @@
+{
+  "name": "ai-workbench",
+  "productName": "个人 AI 工作台",
+  "version": "1.0.0",
+  "description": "本地优先的中文 Agent 工作台桌面应用",
+  "main": "main.js",
+  "author": "Modusensus",
+  "license": "MIT",
+  "scripts": {
+    "dev": "electron .",
+    "build": "electron-builder --win",
+    "build:dir": "electron-builder --win --dir"
+  },
+  "build": {
+    "appId": "com.modusensus.ai-workbench",
+    "productName": "个人 AI 工作台",
+    "directories": {
+      "output": "dist"
+    },
+    "extraResources": [
+      {
+        "from": "../backend/dist",
+        "to": "backend"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerLanguages": [
+        "zh-CN",
+        "en-US"
+      ],
+      "shortcutName": "个人 AI 工作台",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  },
+  "devDependencies": {
+    "electron": "^33.4.11",
+    "electron-builder": "^25.0.0"
+  }
+}
