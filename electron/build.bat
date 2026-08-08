@@ -47,18 +47,26 @@ if not exist "node_modules\" (
     echo   安装 Electron 依赖...
     call npm install
 )
-call npx electron-builder --win --dir
+:: 使用 electron-builder 创建 unpacked 目录
+set ELECTRON_CACHE=%~dp0cache
+set ELECTRON_BUILDER_CACHE=%~dp0cache\builder
+set CSC_IDENTITY_AUTO_DISCOVERY=false
+call node node_modules/electron-builder/out/cli/cli.js --win --dir
 if %errorlevel% neq 0 (
     echo   [错误] 安装包构建失败
     pause
     exit /b 1
 )
+:: 打包为便携版 zip
+echo   正在创建便携版 zip...
+powershell -Command "Compress-Archive -Path '%~dp0dist\win-unpacked\*' -DestinationPath '%~dp0dist\个人AI工作台-便携版.zip' -Force"
 
 echo.
 echo   ───────────────────────────────
 echo   ✓ 构建完成！
 echo.
-echo   安装包位置: electron\dist\
+echo   便携版: electron\dist\个人AI工作台-便携版.zip
+echo   解压即用: 解压后双击 "个人 AI 工作台.exe" 启动
 echo   ───────────────────────────────
 echo.
 

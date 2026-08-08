@@ -20,3 +20,5 @@ electron/dist/
 electron/backend-dist/
 electron/build-temp/
 electron/ai-workbench.spec
+electron/cache/
+electron/.npmrc

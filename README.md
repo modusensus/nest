@@ -36,6 +36,21 @@
 
 > 手机访问：同一局域网下，用电脑 IP 替换 localhost，在手机浏览器打开后选择「添加到主屏幕」即可作为独立 APP 使用。
 
+### 打包为桌面安装包 (.exe)
+
+```powershell
+# 需要 Python 3.11+ 与 Node.js 20+
+cd electron
+.\build.bat
+```
+
+构建完成后，安装包在 `electron\dist\` 目录下。双击安装包即可安装为 Windows 桌面应用，无需额外安装 Python 或 Docker。构建脚本会自动：
+1. 构建前端 (`npm run build`)
+2. 用 PyInstaller 将后端打包为单个 `.exe`
+3. 用 electron-builder 生成便携版 zip 包
+
+产物为 `个人AI工作台-便携版.zip`，解压后双击 `个人 AI 工作台.exe` 即可启动，无需安装。
+
 ### 手动 Docker 启动
 
 ```powershell
