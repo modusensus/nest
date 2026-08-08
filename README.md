@@ -167,17 +167,51 @@ CLAUDE_WORKSPACES=学习项目=C:\\Users\\你的名字\\Projects\\ai-learning;�
 
 > 注意：Claude Code 是宿主机上的 CLI。要使用此面板，请按“本地开发启动”在安装了 Claude Code 的电脑上运行后端；默认 Docker 容器不能直接调用宿主机的 `claude` 命令。
 
-## 云服务器 + 手机部署
+## 云服务器部署（手机随时随地访问）
 
-详细步骤见 [手机访问个人AI工作台-部署说明.md](手机访问个人AI工作台-部署说明.md)。要点：
+部署到云服务器后，手机 APK 和桌面 APP 都能从任何地方连接，不再受局域网限制。
 
-1. 将项目放到服务器，例如 `/opt/personal-ai-workbench`，安装 Node.js、Python 和已登录的 Claude Code。
-2. 按“本地开发启动”安装后端依赖，并运行 `npm install && npm run build` 构建前端。
-3. 复制 `backend/.env.example` 为 `.env`，设置强密码和随机会话密钥；生产环境必须设 `COOKIE_SECURE=true`。
-4. 将 `deploy/personal-ai-workbench.service` 中的用户和路径改成实际值，复制到 `/etc/systemd/system/`，执行 `sudo systemctl enable --now personal-ai-workbench`。
-5. 将 `deploy/Caddyfile` 中的域名改为自己的域名，配置 Caddy 自动启用 HTTPS；手机打开该 HTTPS 地址后，可在浏览器菜单选择“添加到主屏幕”。
+### 一键部署（推荐）
 
-不要直接开放 8000 端口；只通过 HTTPS 反向代理访问。所有 API 和 Claude Code 执行均需要登录。
+在 Ubuntu/Debian 云服务器上运行：
+
+```bash
+git clone https://github.com/modusensus/nest.git /opt/ai-workbench
+cd /opt/ai-workbench
+bash deploy/setup.sh --domain ai.example.com --password 你的强密码
+```
+
+脚本会自动安装 Docker、Caddy，配置 HTTPS 并启动服务。部署完成后编辑 `backend/.env` 填入你的 LLM API Key。
+
+### 手动部署
+
+```bash
+# 1. 克隆项目
+git clone https://github.com/modusensus/nest.git /opt/ai-workbench
+cd /opt/ai-workbench
+
+# 2. 配置密钥
+cp backend/.env.example backend/.env
+# 编辑 backend/.env，填入 LLM_API_KEY、强密码、随机 SESSION_SECRET
+# 生产环境必须设置 COOKIE_SECURE=true
+
+# 3. 启动 Docker
+docker compose -f docker-compose.prod.yml up -d --build
+
+# 4. 配置 Caddy（HTTPS 反向代理）
+# 将 deploy/Caddyfile 中的域名改为你自己的，复制到 /etc/caddy/
+systemctl reload caddy
+```
+
+### 手机连接
+
+| 方式 | 操作 |
+|---|---|
+| **APK**（推荐） | 安装 APK → 服务器地址填 `https://你的域名` → 输入密码 |
+| **PWA** | 手机浏览器打开 `https://你的域名` → 添加到主屏幕 |
+| **桌面 APP** | 解压便携版 zip → 双击 exe → 自动连接 localhost |
+
+> **重要：** 不要直接暴露 8000 端口。只通过 Caddy HTTPS 反向代理访问，所有 API 都需要登录。`COOKIE_SECURE=true` 确保 Cookie 仅通过 HTTPS 传输。
 
 ## 安全提醒
 
