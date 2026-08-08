@@ -1,1 +1,1 @@
-{"name":"个人 AI 工作台","short_name":"AI 工作台","start_url":"/","display":"standalone","background_color":"#f6f4ee","theme_color":"#9e2b25","icons":[{"src":"/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any"}]}
+{"name":"个人 AI 工作台","short_name":"AI 工作台","description":"对话驱动的个人项目、任务、打卡与写作工作台","start_url":"/","display":"standalone","orientation":"portrait-primary","background_color":"#f1eee5","theme_color":"#9e2b25","icons":[{"src":"/icon.svg","sizes":"128x128","type":"image/svg+xml","purpose":"any maskable"}]}

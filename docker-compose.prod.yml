@@ -1,0 +1,28 @@
+# 生产环境部署配置
+# 用法: docker compose -f docker-compose.prod.yml up -d
+services:
+  workbench:
+    build: .
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      - LLM_BASE_URL=${LLM_BASE_URL}
+      - LLM_API_KEY=${LLM_API_KEY}
+      - LLM_MODEL=${LLM_MODEL:-deepseek-chat}
+      - WORKBENCH_PASSWORD=${WORKBENCH_PASSWORD}
+      - WORKBENCH_SESSION_SECRET=${WORKBENCH_SESSION_SECRET}
+      - COOKIE_SECURE=${COOKIE_SECURE:-false}
+    volumes:
+      - workbench_data:/app/backend/data
+      - workbench_memories:/app/backend/memories
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/auth/me').status"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  workbench_data:
+  workbench_memories:

@@ -8,3 +8,4 @@ services:
     volumes:
       - ./backend/data:/app/backend/data
       - ./backend/memories:/app/backend/memories
+    restart: unless-stopped

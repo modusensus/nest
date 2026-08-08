@@ -25,29 +25,31 @@
 
 ## 最快启动（推荐）
 
-确保已安装 Docker Desktop。先复制配置模板并填写模型密钥：
+确保已安装 [Docker Desktop](https://www.docker.com/products/docker-desktop/)，然后双击项目根目录的启动脚本：
+
+**Windows：** 双击 `start.bat`  
+**macOS / Linux：** 终端执行 `./start.sh`
+
+首次运行会自动创建配置文件，按提示填写 API Key 和密码后再次运行即可。容器启动后浏览器会自动打开 `http://localhost:8000`。
+
+> 手机访问：同一局域网下，用电脑 IP 替换 localhost，在手机浏览器打开后选择「添加到主屏幕」即可作为独立 APP 使用。
+
+### 手动 Docker 启动
 
 ```powershell
 Copy-Item backend/.env.example backend/.env
-```
-
-编辑 `backend/.env`：
-
-```env
-LLM_BASE_URL=https://api.deepseek.com
-LLM_API_KEY=你的_DeepSeek_API_Key
-LLM_MODEL=deepseek-chat
-WORKBENCH_PASSWORD=换成一个强密码
-WORKBENCH_SESSION_SECRET=换成至少32位随机字符串
-```
-
-然后在项目根目录运行：
-
-```powershell
+# 编辑 backend/.env 填入 API Key 和密码
 docker compose up --build
 ```
 
-打开 `http://localhost:8000`。第一次启动会自动建立数据库。
+### 生产环境部署
+
+```powershell
+# 通过环境变量传入配置（不依赖 .env 文件）
+docker compose -f docker-compose.prod.yml up -d
+```
+
+生产版 compose 绑定 127.0.0.1，建议前置 Nginx / Caddy 做 HTTPS 反向代理。
 
 ## 本地开发启动
 
@@ -86,7 +88,8 @@ python work/mock_llm.py   # 监听 :9000
 
 ## 使用说明
 
-- **新建会话**：侧栏进入「对话」，点击“新建对话”。标题会在首次发送消息后自动使用消息前 24 个字。
+- **安装为 APP**：在手机浏览器打开工作台地址后，点击浏览器菜单 →「添加到主屏幕」。桌面端 Chrome / Edge 地址栏右侧也有安装图标。安装后以独立窗口运行，无浏览器边框，体验接近原生 APP。
+- **新建会话**：侧栏进入「对话」，点击"新建对话"。标题会在首次发送消息后自动使用消息前 24 个字。
 - **系统提示词**：通过 `PATCH /api/conversations/{id}` 设置；未设置时使用内置的工作台助手提示词（含当日日期）。
 - **搜索**：对话页的搜索会匹配会话标题和全部聊天内容。
 - **打卡**：主页或打卡页点击习惯即可打/撤今天的卡；热力图按所有习惯聚合计数。
