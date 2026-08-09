@@ -350,12 +350,160 @@
    ============================================================ */
 @media (max-width:1100px){.wb-overview{display:none}}
 @media (max-width:860px){
-  .wb-app{flex-direction:column}
-  .wb-sidebar{width:100%;border-right:0;border-bottom:1px solid var(--border);max-height:46vh}
-  .wb-nav{grid-auto-flow:column;overflow:auto;border-bottom:0}
-  .wb-theme-toggle{margin-top:0}
   .wb-kanban{grid-template-columns:1fr}
   .wb-memory{flex-direction:column}
   .wb-memory-list{width:100%}
-  .wb-masthead,.wb-home-wide,.wb-home-grid,.wb-masonry,.wb-view-header,.wb-form,.wb-cards,.wb-kanban{padding-left:20px;padding-right:20px}
+}
+
+/* ============================================================
+   移动端适配（< 768px）
+   策略：侧边栏 → 抽屉式遮挡层 + 底部导航栏
+   ============================================================ */
+
+/* —— 汉堡菜单按钮 —— */
+.wb-hamburger{display:none}
+
+/* —— 移动端遮罩层 —— */
+.wb-mobile-mask{display:none}
+
+/* —— 移动端底部导航 —— */
+.wb-mobile-bottom-nav{display:none}
+
+@media (max-width:768px){
+  /* ── 布局骨架 ── */
+  .wb-app{position:relative}
+  .wb-main{padding-bottom:62px} /* 给底部导航留空间 */
+
+  /* ── 侧边栏 → 抽屉式遮挡层 ── */
+  .wb-sidebar{
+    position:fixed;top:0;left:0;bottom:0;z-index:100;
+    transform:translateX(-100%);transition:transform .32s cubic-bezier(.7,0,.2,1);
+    max-height:none;width:260px;border-right:1px solid var(--border);
+    overflow-y:auto;padding:22px 18px;border-bottom:0;
+  }
+  .wb-sidebar.mobile-open{transform:translateX(0);box-shadow:4px 0 30px rgba(0,0,0,.18)}
+  .wb-sidebar.collapsed{width:260px;padding:22px 18px;align-items:stretch}
+  .wb-sidebar.collapsed .wb-avatar{width:56px;height:56px}
+  .wb-sidebar.collapsed .wb-profile{padding:4px 2px 14px;border-bottom:1px solid var(--border)}
+  .wb-sidebar.collapsed .wb-profile-text,
+  .wb-sidebar.collapsed .wb-profile-edit{display:block}
+  .wb-sidebar.collapsed .wb-nav button{justify-content:flex-start;padding:9px 8px}
+  .wb-sidebar.collapsed .wb-nav button.active::before{left:-18px}
+  .wb-sidebar.collapsed .wb-theme-toggle{justify-content:flex-start}
+  .wb-sidebar.collapsed .wb-theme-track{width:64px;height:26px}
+  .wb-sidebar.collapsed .wb-server-cfg{display:block}
+  .wb-sidebar.collapsed .wb-collapse{display:none}
+  .wb-sidebar .wb-collapse{display:none}
+  .wb-nav button span{display:inline} /* 始终显示文字 */
+
+  /* ── 遮罩层 ── */
+  .wb-mobile-mask{
+    display:block;position:fixed;inset:0;z-index:99;
+    background:rgba(18,16,14,.5);backdrop-filter:blur(2px);
+  }
+
+  /* ── 汉堡菜单按钮 ── */
+  .wb-hamburger{
+    display:grid;place-items:center;
+    position:fixed;top:12px;left:12px;z-index:60;
+    width:36px;height:36px;border:1px solid var(--border);
+    background:var(--surface);color:var(--text);cursor:pointer;
+    font-size:18px;padding:0;transition:color .15s;
+  }
+  .wb-hamburger:hover{color:var(--accent);border-color:var(--accent)}
+
+  /* ── 底部导航栏 ── */
+  .wb-mobile-bottom-nav{
+    display:flex;position:fixed;bottom:0;left:0;right:0;z-index:50;
+    height:56px;background:var(--surface);border-top:1px solid var(--border);
+    overflow-x:auto;padding:0 4px;gap:0;
+    -webkit-overflow-scrolling:touch;
+  }
+  .wb-mobile-bottom-nav button{
+    flex:1;min-width:44px;display:grid;place-items:center;
+    border:0;background:transparent;color:var(--faint);cursor:pointer;
+    font-size:18px;padding:6px 0;transition:color .15s;
+    position:relative;
+  }
+  .wb-mobile-bottom-nav button.active{color:var(--accent)}
+  .wb-mobile-bottom-nav button.active::after{
+    content:'';position:absolute;top:0;left:20%;right:20%;height:2px;
+    background:var(--accent);
+  }
+
+  /* ── 内容区域 ── */
+  .wb-masthead,.wb-home-wide,.wb-home-grid,.wb-masonry,
+  .wb-view-header,.wb-form,.wb-cards,.wb-kanban,
+  .wb-memory-tabs,.wb-proposals,.wb-facts,.wb-memory{
+    padding-left:16px;padding-right:16px;
+  }
+  .wb-masthead{padding:20px 16px 18px}
+  .wb-masthead-top{flex-direction:column;align-items:flex-start;gap:4px}
+  .wb-masthead-title{font-size:clamp(24px,6vw,34px)}
+  .wb-masthead-standfirst{font-size:13px}
+
+  .wb-home-wide{padding:14px 16px 4px}
+  .wb-home-grid{padding:14px 16px;grid-template-columns:1fr}
+  .wb-masonry{columns:1;column-gap:0;padding:0 16px 16px}
+  .wb-masonry>.wb-card{margin-bottom:14px}
+  .wb-home-top-row{grid-template-columns:1fr}
+
+  /* ── 卡片 ── */
+  .wb-card{padding:16px}
+
+  /* ── 表单 ── */
+  .wb-form{padding:14px 16px;flex-direction:column;align-items:stretch}
+  .wb-form input,.wb-form select{min-width:0;width:100%}
+  .wb-countdown-form{flex-direction:column;align-items:stretch}
+  .wb-countdown-form input:first-child{min-width:0}
+  .wb-countdown-form input[type="date"]{width:100%}
+
+  /* ── 看板 ── */
+  .wb-kanban{gap:14px;padding:14px 16px}
+
+  /* ── 对话 ── */
+  .wb-messages{padding:20px 14px}
+  .wb-msg{gap:10px;max-width:100%}
+  .wb-msg-role{width:28px;height:28px;font-size:9px}
+  .wb-bubble{font-size:13px;padding:10px 13px}
+  .wb-composer{padding:12px 14px;flex-direction:column;gap:8px}
+  .wb-composer textarea{min-height:48px;max-height:120px}
+
+  /* ── 写作 ── */
+  .wb-writing{flex-direction:column}
+  .wb-writing-list{width:100%;max-height:180px;border-right:0;border-bottom:1px solid var(--border);padding:14px}
+  .wb-editor-title{min-width:0;font-size:14px}
+  .wb-editor-toolbar{padding:10px 14px;gap:6px}
+  .wb-editor-body.split{grid-template-columns:1fr}
+  .wb-editor-body textarea{padding:16px 18px;font-size:13px}
+  .wb-preview{padding:18px 20px;border-left:0;border-top:1px solid var(--border)}
+  .wb-platforms{padding:12px 14px}
+  .wb-platform-row{flex-direction:column;align-items:flex-start;gap:4px}
+  .wb-platform-url{width:100%}
+
+  /* ── 项目/打卡卡片网格 ── */
+  .wb-cards{grid-template-columns:1fr;padding:14px 16px}
+
+  /* ── 打卡 ── */
+  .wb-habit-stats{flex-wrap:wrap;gap:10px}
+  .wb-checkin{margin-left:0;width:100%;text-align:center}
+
+  /* ── 记忆库 ── */
+  .wb-memory-tabs button{padding:8px 12px;font-size:12px}
+  .wb-memory{padding:14px 16px;gap:12px}
+  .wb-memory-content{padding:16px 18px;min-height:200px}
+  .wb-proposals,.wb-facts{padding:14px 16px}
+
+  /* ── 弹窗 ── */
+  .wb-modal{padding:20px;width:min(100%,360px);margin:0 12px}
+
+  /* ── 登录页 ── */
+  .wb-login-form{padding:28px 20px!important}
+
+  /* ── 个人信息弹窗 ── */
+  .wb-field input{width:100%}
+
+  /* ── 概况热力图 ── */
+  .wb-heat span{width:10px;height:10px}
+  .wb-heat-months span{font-size:9px}
 }

@@ -34,7 +34,7 @@ function LoginGate() {
 
   return (
     <main style={{ minHeight: '100vh', display: 'grid', placeItems: 'center', padding: 20, background: 'var(--bg)' }}>
-      <form onSubmit={login} style={{
+      <form onSubmit={login} className="wb-login-form" style={{
         width: 'min(100%, 380px)', padding: '36px 32px', background: 'var(--surface)',
         border: '1px solid var(--border)', borderRadius: 2, display: 'grid', gap: 16,
       }}>

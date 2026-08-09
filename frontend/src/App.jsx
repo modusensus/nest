@@ -44,6 +44,15 @@ export default function App() {
   const [serverUrl, setServerUrl] = useState(() => getBaseUrl() || '')
   const [showServerInput, setShowServerInput] = useState(false)
 
+  // 移动端检测：侧边栏 → 抽屉，底部导航栏
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
+
   const loadProfile = useCallback(() => api('/profile').then(setProfile).catch(() => {}), [])
   useEffect(() => { loadProfile() }, [loadProfile])
 
@@ -73,6 +82,7 @@ export default function App() {
   }, [dataVersion])
 
   function navigate(viewId, payload = null) {
+    if (isMobile) setMobileMenuOpen(false)
     if (viewId === 'writing') setFocusArticleId(payload)
     setView(viewId)
   }
@@ -93,7 +103,12 @@ export default function App() {
 
   return (
     <div className="wb-app">
-      <aside className={collapsed ? 'wb-sidebar collapsed' : 'wb-sidebar'}>
+      {isMobile && (
+        <button className="wb-hamburger" onClick={() => setMobileMenuOpen(v => !v)} aria-label="菜单">
+          {mobileMenuOpen ? '×' : '☰'}
+        </button>
+      )}
+      <aside className={`wb-sidebar ${collapsed ? 'collapsed' : ''} ${isMobile && mobileMenuOpen ? 'mobile-open' : ''}`}>
         <button className="wb-profile" onClick={() => setEditingProfile(true)} title="编辑个人信息">
           {profile?.avatar_url
             ? <img className="wb-avatar" src={profile.avatar_url} alt="头像" />
@@ -165,6 +180,7 @@ export default function App() {
           {collapsed ? '»' : '«'}
         </button>
       </aside>
+      {isMobile && mobileMenuOpen && <div className="wb-mobile-mask" onClick={() => setMobileMenuOpen(false)} />}
       <main className="wb-main">
         {view === 'home' && <HomeView profile={profile} onNavigate={navigate} onDataChanged={refreshData} />}
         {view === 'chat' && <ChatView conversationId={activeId} onDataChanged={refreshData} onConversationsChanged={loadConversations} />}
@@ -176,6 +192,15 @@ export default function App() {
         {view === 'memory' && <MemoryView />}
       </main>
       {!FULL_WIDTH_VIEWS.has(view) && <OverviewPanel overview={overview} />}
+      {isMobile && (
+        <nav className="wb-mobile-bottom-nav">
+          {NAV.map(item => (
+            <button key={item.id} className={view === item.id ? 'active' : ''} onClick={() => navigate(item.id)} title={item.label}>
+              <Icon name={item.icon} />
+            </button>
+          ))}
+        </nav>
+      )}
       {editingProfile && (
         <ProfileEditor profile={profile} onClose={() => setEditingProfile(false)} onSaved={setProfile} />
       )}
