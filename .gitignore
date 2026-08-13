@@ -27,3 +27,4 @@ electron/.npmrc
 # Capacitor Android 构建产物
 frontend/android/
 frontend/node_modules/@capacitor/
+.trae-html-share-packages/
