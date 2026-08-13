@@ -140,4 +140,4 @@ class Handler(BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     print("mock llm (function-calling demo) on :9000")
-    HTTPServer(("127.0.0.1", 9000), Handler).serve_forever()
+    HTTPServer(("127.0.0.1", 9999), Handler).serve_forever()
