@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { api, post } from '../api'
 
 const COLUMNS = [
@@ -15,6 +15,7 @@ export default function TasksView({ onDataChanged }) {
   const [title, setTitle] = useState('')
   const [projectId, setProjectId] = useState('')
   const [dueDate, setDueDate] = useState('')
+  const titleRef = useRef(null)
 
   const load = () => {
     api('/tasks').then(setTasks)
@@ -47,7 +48,7 @@ export default function TasksView({ onDataChanged }) {
         <p>拖动不了就点箭头：任务在待办 → 进行中 → 已完成之间流转。</p>
       </header>
       <form className="wb-form" onSubmit={create}>
-        <input value={title} onChange={e => setTitle(e.target.value)} placeholder="任务标题" />
+        <input ref={titleRef} autoFocus value={title} onChange={e => setTitle(e.target.value)} placeholder="任务标题" />
         <select value={projectId} onChange={e => setProjectId(e.target.value)}>
           <option value="">不归属项目</option>
           {projects.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
@@ -76,6 +77,12 @@ export default function TasksView({ onDataChanged }) {
           </div>
         ))}
       </div>
+      {tasks.length === 0 && (
+        <div className="wb-empty-inline" style={{ padding: '0 36px' }}>
+          <p className="wb-muted">看板还空着。添加一个任务，或对 Agent 说「给项目加个任务」。</p>
+          <button className="wb-ghost" onClick={() => titleRef.current?.focus()}>添加第一个任务</button>
+        </div>
+      )}
     </section>
   )
 }

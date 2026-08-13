@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { api, post } from '../api'
 import Heatmap from '../components/Heatmap'
 
@@ -6,6 +6,7 @@ export default function HabitsView({ onDataChanged }) {
   const [habits, setHabits] = useState([])
   const [logs, setLogs] = useState({})
   const [name, setName] = useState('')
+  const nameRef = useRef(null)
 
   const load = () => {
     api('/habits').then(setHabits)
@@ -43,7 +44,7 @@ export default function HabitsView({ onDataChanged }) {
         <p>每天点一下，或者对 Agent 说「今天健身打卡」。</p>
       </header>
       <form className="wb-form" onSubmit={create}>
-        <input value={name} onChange={e => setName(e.target.value)} placeholder="新习惯，如：健身、阅读、早起" />
+        <input ref={nameRef} autoFocus value={name} onChange={e => setName(e.target.value)} placeholder="新习惯，如：健身、阅读、早起" />
         <button className="primary" type="submit">添加习惯</button>
       </form>
       <div className="wb-cards wb-cards-wide">
@@ -82,7 +83,12 @@ export default function HabitsView({ onDataChanged }) {
             <Heatmap data={Object.fromEntries(h.recent.map(d => [d, 1]))} weeks={5} />
           </div>
         ))}
-        {habits.length === 0 && <p className="wb-muted">还没有打卡习惯。添加一个，开始积累连续天数。</p>}
+        {habits.length === 0 && (
+          <div className="wb-empty-inline">
+            <p className="wb-muted">还没有打卡习惯。添加一个，开始积累连续天数。</p>
+            <button className="wb-ghost" onClick={() => nameRef.current?.focus()}>添加第一个习惯</button>
+          </div>
+        )}
       </div>
     </section>
   )

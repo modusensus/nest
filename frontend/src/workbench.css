@@ -8,10 +8,10 @@
 
 /* —— 侧边导航：刊脊式字距标签 —— */
 .wb-nav{display:grid;gap:0;border-top:2px solid var(--rule);border-bottom:1px solid var(--border);padding:6px 0}
-.wb-nav button{display:flex;align-items:center;gap:12px;border:0;background:transparent;text-align:left;padding:9px 8px;cursor:pointer;color:var(--muted);font-size:11px;letter-spacing:.2em;text-transform:uppercase;transition:color .15s;position:relative}
+.wb-nav button{display:flex;align-items:center;gap:12px;border:0;background:transparent;text-align:left;padding:9px 8px;cursor:pointer;color:var(--muted);font-size:11px;letter-spacing:.2em;text-transform:uppercase;transition:color .2s,background .2s;position:relative}
 .wb-nav button span{font-weight:600}
-.wb-nav button:hover{color:var(--text)}
-.wb-nav button.active{color:var(--accent)}
+.wb-nav button:hover{color:var(--text);background:color-mix(in srgb,var(--text) 4%,transparent)}
+.wb-nav button.active{color:var(--accent);background:var(--accent-soft)}
 .wb-nav button.active::before{content:'';position:absolute;left:-18px;top:6px;bottom:6px;width:3px;background:var(--accent)}
 .wb-theme-toggle{margin-top:auto;border:0;background:transparent;cursor:pointer;padding:0;display:flex;align-items:center;gap:11px;font-family:var(--serif)}
 .wb-theme-track{position:relative;display:grid;grid-template-columns:1fr 1fr;width:64px;height:26px;border:1px solid var(--text);flex:none}
@@ -64,6 +64,20 @@
 /* —— 主页内容区 —— */
 .wb-home-wide{display:grid;gap:18px;padding:22px 36px 4px}
 .wb-home-grid{display:grid;gap:18px;padding:18px 36px;grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}
+
+/* —— 本周概览：编辑带式统计条 —— */
+.wb-weekstrip{display:flex;align-items:stretch;gap:0;margin:0 36px;border:1px solid var(--border);border-top:0;background:var(--surface)}
+.wb-weekstrip-label{flex:none;align-self:stretch;display:grid;place-items:center;padding:0 18px;background:var(--text);color:var(--bg);font-size:var(--fs-eyebrow);letter-spacing:.24em;text-transform:uppercase;font-weight:600;writing-mode:vertical-rl}
+.wb-weekstat{flex:1;display:grid;place-items:center;gap:2px;padding:14px 8px;border-left:1px solid var(--border);text-align:center}
+.wb-weekstat b{font-family:var(--serif);font-weight:500;font-size:24px;line-height:1;color:var(--text);font-variant-numeric:tabular-nums}
+.wb-weekstat span{font-size:var(--fs-eyebrow);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600;white-space:nowrap}
+.wb-weekstat:hover b{color:var(--accent)}
+@media (max-width:860px){
+  .wb-weekstrip{margin:0 16px;flex-wrap:wrap}
+  .wb-weekstrip-label{writing-mode:horizontal-tb;width:100%;padding:8px 0;border-right:0}
+  .wb-weekstat{flex:1 1 33%;border-left:0;border-top:1px solid var(--border);padding:10px 4px}
+  .wb-weekstat b{font-size:20px}
+}
 
 /* —— 瀑布流 —— */
 .wb-masonry{columns:2 320px;column-gap:18px;padding:0 36px 24px}
@@ -210,6 +224,9 @@
 .wb-empty h1{font-family:var(--serif);font-weight:500;font-size:28px;color:var(--text);margin:0 0 12px;letter-spacing:-.005em;-webkit-font-smoothing:antialiased}
 .wb-empty h1::after{content:'';display:block;width:30px;height:2px;background:var(--accent);margin:12px auto 0}
 .wb-empty p{font-family:var(--serif);font-style:italic;font-size:var(--fs-lead);max-width:48ch;line-height:1.8}
+.wb-empty-actions{margin-top:18px;display:flex;gap:10px;justify-content:center}
+.wb-empty-inline{display:grid;gap:14px;justify-items:start;padding:6px 4px;grid-column:1/-1}
+.wb-empty-inline .wb-muted{margin:0}
 
 /* ============================================================
    表单
@@ -344,6 +361,23 @@
 .wb-fact-content{flex:1;font-family:var(--serif);font-size:13.5px;line-height:1.7}
 .wb-fact button{border:0;background:none;color:var(--text-muted);cursor:pointer;font-size:16px;padding:0 4px;flex:none}
 .wb-fact button:hover{color:var(--red,#c44)}
+
+/* ============================================================
+   动效基底：视图进入 + 流式光标 + 工具卡片
+   ============================================================ */
+@keyframes wb-view-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.wb-main>*{animation:wb-view-in .4s cubic-bezier(.22,.61,.36,1) both}
+
+/* 流式回复的闪烁光标 */
+.wb-bubble.streaming::after{content:'▍';margin-left:2px;color:var(--accent);animation:wb-blink 1s steps(1) infinite}
+@keyframes wb-blink{50%{opacity:0}}
+
+/* 工具卡片逐项浮现 */
+.wb-tool{animation:wb-tool-in .3s cubic-bezier(.22,.61,.36,1) both}
+.wb-tool:nth-child(2){animation-delay:.04s}
+.wb-tool:nth-child(3){animation-delay:.08s}
+.wb-tool:nth-child(4){animation-delay:.12s}
+@keyframes wb-tool-in{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
 
 /* ============================================================
    响应式

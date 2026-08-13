@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { api, getBaseUrl } from '../api'
 
-export default function ChatView({ conversationId, onDataChanged, onConversationsChanged }) {
+export default function ChatView({ conversationId, onDataChanged, onConversationsChanged, onNewConversation }) {
   const [conversation, setConversation] = useState(null)
   const [input, setInput] = useState('')
   const [streaming, setStreaming] = useState(false)
@@ -21,6 +21,11 @@ export default function ChatView({ conversationId, onDataChanged, onConversation
       <section className="wb-empty">
         <h1>和你的 Agent 说点什么</h1>
         <p>试试：「帮我建一个网站项目，加三个任务」「今天健身打卡」「我现在进展怎么样」</p>
+        {onNewConversation && (
+          <div className="wb-empty-actions">
+            <button className="primary" onClick={onNewConversation}>＋ 新建对话</button>
+          </div>
+        )}
       </section>
     )
   }
@@ -114,7 +119,7 @@ export default function ChatView({ conversationId, onDataChanged, onConversation
                   ))}
                 </div>
               )}
-              <div className="wb-bubble">{m.content || (streaming && m.role === 'assistant' ? '正在思考…' : '')}</div>
+              <div className={`wb-bubble ${streaming && m.role === 'assistant' && m === conversation.messages[conversation.messages.length - 1] ? 'streaming' : ''}`}>{m.content || (streaming && m.role === 'assistant' ? '正在思考…' : '')}</div>
             </div>
           </article>
         ))}
@@ -122,6 +127,7 @@ export default function ChatView({ conversationId, onDataChanged, onConversation
       </div>
       <div className="wb-composer">
         <textarea
+          autoFocus
           value={input}
           onChange={e => setInput(e.target.value)}
           onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send() } }}

@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { api, post } from '../api'
 
 export default function ProjectsView({ onDataChanged }) {
   const [projects, setProjects] = useState([])
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
+  const nameRef = useRef(null)
 
   const load = () => api('/projects').then(setProjects)
   useEffect(() => { load() }, [])
@@ -35,7 +36,7 @@ export default function ProjectsView({ onDataChanged }) {
         <p>跟踪每个项目的任务完成情况。</p>
       </header>
       <form className="wb-form" onSubmit={create}>
-        <input value={name} onChange={e => setName(e.target.value)} placeholder="项目名称" />
+        <input ref={nameRef} autoFocus value={name} onChange={e => setName(e.target.value)} placeholder="项目名称" />
         <input value={description} onChange={e => setDescription(e.target.value)} placeholder="描述（可选）" />
         <button className="primary" type="submit">创建项目</button>
       </form>
@@ -57,7 +58,12 @@ export default function ProjectsView({ onDataChanged }) {
             </div>
           )
         })}
-        {projects.length === 0 && <p className="wb-muted">还没有项目。可以在这里创建，或直接对 Agent 说「帮我建一个项目」。</p>}
+        {projects.length === 0 && (
+          <div className="wb-empty-inline">
+            <p className="wb-muted">还没有项目。可以在这里创建，或直接对 Agent 说「帮我建一个项目」。</p>
+            <button className="wb-ghost" onClick={() => nameRef.current?.focus()}>创建第一个项目</button>
+          </div>
+        )}
       </div>
     </section>
   )

@@ -35,19 +35,23 @@ function LoginGate() {
   return (
     <main style={{ minHeight: '100vh', display: 'grid', placeItems: 'center', padding: 20, background: 'var(--bg)' }}>
       <form onSubmit={login} className="wb-login-form" style={{
-        width: 'min(100%, 380px)', padding: '36px 32px', background: 'var(--surface)',
-        border: '1px solid var(--border)', borderRadius: 2, display: 'grid', gap: 16,
+        width: 'min(100%, 400px)', padding: '40px 36px', background: 'var(--surface)',
+        border: '1px solid var(--border)', borderRadius: 0, display: 'grid', gap: 6,
       }}>
-        <div className="brand">◈ 个人 AI 工作台</div>
-        <h1 style={{ fontFamily: 'var(--serif)', fontWeight: 500, fontSize: 20, margin: 0, letterSpacing: '.03em' }}>欢迎回来</h1>
-        <p style={{ margin: 0, color: 'var(--muted)', fontSize: 13 }}>请输入服务器地址和访问密码。</p>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 6 }}>
+          <span className="brand">◈ 个人 AI 工作台</span>
+          <span style={{ fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '.18em', color: 'var(--muted)', textTransform: 'uppercase' }}>Agent · Workbench</span>
+        </div>
+        <div style={{ borderTop: '2px solid var(--rule)', marginBottom: 14 }} />
+        <h1 style={{ fontFamily: 'var(--serif)', fontWeight: 500, fontSize: 24, margin: 0, letterSpacing: '.02em' }}>欢迎回来</h1>
+        <p style={{ margin: '0 0 18px', color: 'var(--muted)', fontSize: 13, fontFamily: 'var(--serif)', fontStyle: 'italic' }}>请输入服务器地址和访问密码，进入你的每日刊。</p>
         <input value={serverUrl} onChange={e => setServerUrl(e.target.value)}
           placeholder="服务器地址，如 http://192.168.1.100:8000"
-          style={{ font: 'inherit', padding: 10 }} />
+          style={{ font: 'inherit', padding: 11, width: '100%' }} />
         <input autoFocus type="password" value={password} onChange={e => setPassword(e.target.value)}
-          placeholder="访问密码" style={{ font: 'inherit', padding: 10 }} />
-        <button className="primary">进入工作台</button>
-        {error && <p style={{ color: 'var(--accent)', margin: 0, fontSize: 13 }}>{error}</p>}
+          placeholder="访问密码" style={{ font: 'inherit', padding: 11, width: '100%' }} />
+        <button className="primary" style={{ marginTop: 10, width: '100%' }}>进入工作台</button>
+        {error && <p style={{ color: 'var(--accent)', margin: '8px 0 0', fontSize: 13 }}>{error}</p>}
       </form>
     </main>
   )

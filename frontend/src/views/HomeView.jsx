@@ -62,6 +62,21 @@ export default function HomeView({ profile, onNavigate, onDataChanged }) {
   const checkedCount = habits.filter(h => h.checked_today).length
   const userName = profile?.name?.replace(/['’]s Home$/i, '') || '朋友'
 
+  // 本周概览：从本周一累计打卡次数
+  const monday = new Date(now)
+  monday.setHours(0, 0, 0, 0)
+  monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7))
+  const weekKey = `${monday.getFullYear()}-${String(monday.getMonth() + 1).padStart(2, '0')}-${String(monday.getDate()).padStart(2, '0')}`
+  const weekCheckins = Object.entries(logs)
+    .filter(([d]) => d >= weekKey)
+    .reduce((sum, [, c]) => sum + c, 0)
+  const doingTasks = overview?.tasks_doing.length ?? 0
+  const doneTasks = overview?.tasks_done_count ?? 0
+  const todoTasks = overview?.tasks_todo_count ?? 0
+  const projTotal = (overview?.projects || []).reduce((s, p) => s + (p.task_total || 0), 0)
+  const projDone = (overview?.projects || []).reduce((s, p) => s + (p.task_done || 0), 0)
+  const projPercent = projTotal ? Math.round((projDone / projTotal) * 100) : 0
+
   // 当月日历单元格（含前置空位，共 42 格）
   const year = now.getFullYear()
   const month = now.getMonth()
@@ -86,6 +101,17 @@ export default function HomeView({ profile, onNavigate, onDataChanged }) {
           今日打卡 <b>{checkedCount}/{habits.length}</b> · 进行中任务 <b>{overview?.tasks_doing.length ?? 0}</b> · 文章 <b>{articles.length}</b> 篇 —— 这是你的个人工作台每日刊。
         </p>
       </header>
+
+      {/* 本周概览：编辑带式统计条 */}
+      <div className="wb-weekstrip">
+        <span className="wb-weekstrip-label">本周概览</span>
+        <div className="wb-weekstat"><b>{weekCheckins}</b><span>次打卡</span></div>
+        <div className="wb-weekstat"><b>{doingTasks}</b><span>进行中</span></div>
+        <div className="wb-weekstat"><b>{doneTasks}</b><span>已完成</span></div>
+        <div className="wb-weekstat"><b>{todoTasks}</b><span>待办</span></div>
+        <div className="wb-weekstat"><b>{articles.length}</b><span>文章</span></div>
+        <div className="wb-weekstat"><b>{projPercent}%</b><span>项目进度</span></div>
+      </div>
 
       <div className="wb-home-wide">
         <div className="wb-home-top-row">

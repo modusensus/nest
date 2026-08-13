@@ -183,7 +183,7 @@ export default function App() {
       {isMobile && mobileMenuOpen && <div className="wb-mobile-mask" onClick={() => setMobileMenuOpen(false)} />}
       <main className="wb-main">
         {view === 'home' && <HomeView profile={profile} onNavigate={navigate} onDataChanged={refreshData} />}
-        {view === 'chat' && <ChatView conversationId={activeId} onDataChanged={refreshData} onConversationsChanged={loadConversations} />}
+        {view === 'chat' && <ChatView conversationId={activeId} onDataChanged={refreshData} onConversationsChanged={loadConversations} onNewConversation={createConversation} />}
         {view === 'projects' && <ProjectsView onDataChanged={refreshData} />}
         {view === 'tasks' && <TasksView onDataChanged={refreshData} />}
         {view === 'habits' && <HabitsView onDataChanged={refreshData} />}
