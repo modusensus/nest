@@ -28,3 +28,6 @@ electron/.npmrc
 frontend/android/
 frontend/node_modules/@capacitor/
 .trae-html-share-packages/
+
+# 临时工具脚本（不入库）
+.tools/
